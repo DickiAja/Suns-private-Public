@@ -1238,11 +1238,11 @@ async function remini(media) {
 	
 	//proses
 if (/image/.test(mime)) {
-          await conn.sendMessage(m.chat, { react: { text: "⏳", key: m.key }}) 
+          await zyko.sendMessage(m.chat, { react: { text: "⏳", key: m.key }}) 
           	let media = await (m.quoted ? m.quoted : m).download()
         let res = await remini(media) 
-        await conn.sendMessage(m.chat, { react: { text: "✅", key: m.key }}) 
-        await conn.sendMessage(m.chat,{ image: { url: res },caption: `Nih kak~` },{ quoted: m })
+        await zyko.sendMessage(m.chat, { react: { text: "✅", key: m.key }}) 
+        await zyko.sendMessage(m.chat,{ image: { url: res },caption: `Nih kak~` },{ quoted: m })
         return
     } else {
         m.reply(`Reply foto dengan caption .${command}`)
