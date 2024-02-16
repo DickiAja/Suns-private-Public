@@ -1204,7 +1204,7 @@ zyko.sendTextWithMentions(m.chat, `@${m.sender.split('@')[0]} telah kembali dari
 
 //=================================================//
 switch (command) {
-	case 'remini': {
+case 'remini': {
 			if (!m.quoted) return m.reply(`Where is the picture?`)
 			if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`)
 			const { remini } = require('./lib/remini')
@@ -1346,7 +1346,6 @@ renderLargerThumbnail: true
 break 
 ///menu menu menu
 case 'Menumain': {
-if (check("id", m.sender) == null) return reply(mess.notregister)
 let all = `
 Hello ${pushname}, ${waktuucapan}, I am a WhatsApp botz that comes with cool features like download tiktok, create stickers, search for songs, and much more I'm here to help you, in various ways, including sending, and etc. The available features are below
 
@@ -2507,7 +2506,6 @@ Hello ${pushname}, ${waktuucapan}, I am a WhatsApp botz that comes with cool fea
 If you find an error, report it immediately by typing .reports good afternoon owner of the download-ig error feature! fix it!
 ${readmore}
 ╔═══《 MENU OTHER 》════⊱
-╠➤ : remini
 ╠➤ : fetch
 ╠➤ : get
 ╠➤ : getpp
@@ -8374,7 +8372,7 @@ if (!m.isGroup) return reply(mess.group)
 if (!isAdmins && !isGroupOwner && !isOwner) return reply(mess.admin)
 if (!isBotAdmins) return reply(mess.botAdmin)
 if (args[0] === 'open') {
- await zyko.groupSettingUpdate(m.chat, 'unlocked').then((res) => reply(`Sukses Membuka Edit Info Group ??️`)).catch((err) => reply(jsonformat(err)))
+ await zyko.groupSettingUpdate(m.chat, 'unlocked').then((res) => reply(`Sukses Membuka Edit Info Group 🕊️`)).catch((err) => reply(jsonformat(err)))
 } else if (args[0] === 'close') {
  await zyko.groupSettingUpdate(m.chat, 'locked').then((res) => reply(`Sukses Menutup Edit Info Group 🕊️`)).catch((err) => reply(jsonformat(err)))
 } else {
