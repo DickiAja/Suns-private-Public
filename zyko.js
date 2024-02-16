@@ -1204,6 +1204,15 @@ zyko.sendTextWithMentions(m.chat, `@${m.sender.split('@')[0]} telah kembali dari
 
 //=================================================//
 switch (command) {
+case 'remini': {
+			if (!m.quoted) return m.reply(`Where is the picture?`)
+			if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`)
+			const { remini } = require('./lib/remini')
+			let media = await quoted.download()
+			let proses = await remini(media, "enhance")
+			zyko.sendMessage(m.chat, { image: proses, caption: `Nih kak~`}, { quoted: m})
+			}
+			break
 case 'daftar':
 case 'registrasi':
 case 'register':
