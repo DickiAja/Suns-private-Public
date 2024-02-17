@@ -1213,6 +1213,63 @@ case 'remini': {
 			zyko.sendMessage(m.chat, { image: proses, caption: `Nih kak~`}, { quoted: m})
 			}
 			break
+case 'daftar':
+case 'registrasi':
+case 'register':
+case 'registered':
+case 'regis':{
+let mm = args.join(' ')
+let m1 = mm.split("|")[0];
+let m2 = mm.split("|")[1];
+let m3 = mm.split("|")[2];
+if (m.isGroup) {
+m.reply(`🇮🇩 _Bot telah mengirimkan pendaftaran ke private chat, silahkan selesaikan agar dapat menggunakan fitur bot ${namabot}._`)
+if (!m2) return zyko.sendMessage(sender, { text: `🇮🇩 _Hi @${sender.split('@')[0]} silahkan ketik umur mu .daftar nama|usia\n\ncontoh .daftar zyko|18`, mentions: [ `${sender.split('@')[0]}@s.whatsapp.net` ]}, { quoted: m })
+}
+if (!m1) return m.reply(`Ex : ${prefix+command} Nama|umur`)
+if (m1 && !m2 && !m3) {
+user.push({id: sender, name: m1})
+fs.writeFileSync('./database/json/user.json', JSON.stringify(user))
+}
+if (m1 && m2 && !m3) {
+user.push({id: sender, name: m1, umur: m2})
+fs.writeFileSync('./database/json/user.json', JSON.stringify(user))
+}
+if (!m3) return zyko.sendMessage(sender, { text: `🇮🇩 _Hi @${sender.split('@')[0]} silahkan pilih jenis kelamin kamu dengan cara ketik nama|usia|jeniskelamin\n\ncontoh .daftar zyko|18|pria`, mentions: [ `${sender.split('@')[0]}@s.whatsapp.net` ]}, { quoted: m })
+
+if (m1 && m2 && m3) {
+user.push({id: sender, name: m1, umur: m2, gender: m3})
+fs.writeFileSync('./database/json/user.json', JSON.stringify(user))
+}
+try {
+ppuser = await zyko.profilePictureUrl(num, 'image')
+} catch {
+ppuser = 'https://tinyurl.com/yx93l6da'
+}
+const nomor_resi = require("crypto").randomBytes(5).toString("hex").toUpperCase()
+let resiNya = `${nomor_resi}`
+let registerOnNya = `${hariini}`
+let teks_daftar =`*──────❲ VERIFIKASI SUKSES ❳──────*
+*Nama :* ${m1}
+*Umur :* ${m2} Tahun
+*Gender :* ${m3}
+*Resi :* ${resiNya}
+*freecode :* A820bdoqP
+*Register On :* ${registerOnNya}
+*Nomor :* ${sender.split('@')[0]}
+*Status :* ${isOwner? 'Owner':'User'} ${namabot}
+*User Ke :* ${user.length}
+*Hit Cmd :* 1
+
+Silahkan ketik *#rules* sebelum memulai bot.`
+if (m1 && m2 && m3) {
+user.push({id: sender, name: m1, umur: m2, gender: m3, resi: resiNya, registerOn: registerOnNya})
+fs.writeFileSync('./database/json/user.json', JSON.stringify(user))
+zyko.sendMessage(sender, { text: `*Memuat Data* › @${sender.split('@')[0]}`, mentions: [ `${sender.split('@')[0]}@s.whatsapp.net` ]}, { quoted: m })
+zyko.sendMessage(sender, { image: { url: ppuser }, caption: teks_daftar }, { quoted: m }) 
+}
+}
+break
 case "public": {
 if (!isOwner) return reply(mess.owner)
 zyko.public = true
