@@ -168,11 +168,6 @@ if (mek.key && mek.key.remoteJid === 'status@broadcast') return
 if (!zyko.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
 if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
 m = smsg(zyko, mek, store)
-var budy = (typeof m.text == 'string' ? m.text : '')
-        if (m.message) {
-            zyko.readMessages([m.key])
-            console.log(chalk.black(chalk.bgWhite('[ PESAN ]')), chalk.black(chalk.bgGreen(new Date)), chalk.black(chalk.bgBlue(budy || m.mtype)) + '\n' + chalk.magenta('=> Dari'), chalk.green(m.pushName), chalk.yellow(m.sender) + '\n' + chalk.blueBright('=> Di'), chalk.green(m.isGroup ? m.pushName : 'Private Chat', m.chat))
-        }
 require("./zyko")(zyko, m, chatUpdate, store)
 } catch (err) {
 console.log(err)
