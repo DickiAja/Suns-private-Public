@@ -1204,6 +1204,90 @@ zyko.sendTextWithMentions(m.chat, `@${m.sender.split('@')[0]} telah kembali dari
 
 //=================================================//
 switch (command) {
+case 'poll': {
+	if(!text) return m.reply(`Contoh: ${prefix+command} Besok main gk?|Ayo aja|Ga ah malas`) 
+let anu = text.split("|") 
+let name = anu.slice(0, 1) 
+let value = anu.slice(1) 
+conn.sendMessage(m.chat, { poll: { name: name, values: value, selectableCount: 1 }})
+}
+break
+case "getsw": case "sw": {
+            if (!store.messages["status@broadcast"].array.length === 0) throw "Gaada 1 status pun"
+            let contacts = Object.values(store.contacts)
+            let [who, value] = m.text.split(/[,|\-+&]/)
+            value = value?.replace(/\D+/g, "")
+
+            let sender
+            if (m.mentions.length !== 0) sender = m.mentions[0]
+            else if (m.text) sender = contacts.find(v => [v.name, v.verifiedName, v.notify].some(name => name && name.toLowerCase().includes(who.toLowerCase())))?.id
+
+            let stories = store.messages["status@broadcast"].array
+            let story = stories.filter(v => v.key && v.key.participant === sender || v.participant === sender).filter(v => v.message && v.message.protocolMessage?.type !== 0)
+            if (story.length === 0) throw "Gaada sw nya"
+            if (value) {
+               if (story.length < value) throw "Jumlahnya ga sampe segitu"
+               await m.reply({ forward: story[value - 1], force: true })
+            } else {
+               for (let msg of story) {
+                  await delay(1500)
+                  await m.reply({ forward: msg, force: true })
+               }
+            }
+         }
+            break
+         case "listsw": {
+            if (!store.messages["status@broadcast"].array.length === 0) throw "Gaada 1 status pun"
+            let stories = store.messages["status@broadcast"].array
+            let story = stories.filter(v => v.message && v.message.protocolMessage?.type !== 0)
+            if (story.length === 0) throw "Status gaada"
+            const result = {}
+            story.forEach(obj => {
+               let participant = obj.key.participant || obj.participant
+               participant = jidNormalizedUser(participant === "status_me" ? hisoka.user.id : participant)
+               if (!result[participant]) {
+                  result[participant] = []
+               }
+               result[participant].push(obj)
+            })
+            let type = (mType) => getContentType(mType) === "extendedTextMessage" ? "text" : getContentType(mType).replace("Message", "")
+            let text = ""
+            for (let id of Object.keys(result)) {
+               if (!id) return
+               text += `*- ${await hisoka.getName(id)}*\n`
+               text += `${result[id].map((v, i) => `${i + 1}. ${type(v.message)}`).join("\n")}\n\n`
+            }
+            await m.reply(text.trim(), { mentions: Object.keys(result) })
+         }
+            break
+case "upsw":
+            if (!m.isOwner) return
+            let statusJidList = Object.values(store.contacts).filter(v => v.isContact).map(v => v.id)
+            let colors = [0xff26c4dc, 0xff792138, 0xff8b6990, 0xfff0b330, 0xffae8774, 0xff5696ff, 0xffff7b6b, 0xff57c9ff, 0xff243640, 0xffb6b327, 0xffc69fcc, 0xff54c265, 0xff6e257e, 0xffc1a03f, 0xff90a841, 0xff7acba5, 0xff8294ca, 0xffa62c71, 0xffff8a8c, 0xff7e90a3, 0xff74676a]
+            if (!quoted.isMedia) {
+               let text = m.text || m.quoted?.body || ""
+               if (!text) throw "Mana text?"
+               await hisoka.sendMessage("status@broadcast", { text }, {
+                  backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+                  textArgb: 0xffffffff,
+                  font: Math.floor(Math.random() * 9),
+                  statusJidList
+               })
+            } else if (/audio/.test(quoted.msg.mimetype)) {
+               await hisoka.sendMessage("status@broadcast", {
+                  audio: await downloadM(),
+                  mimetype: 'audio/mp4',
+                  ptt: true
+               }, { backgroundColor: colors[Math.floor(Math.random() * colors.length)], statusJidList })
+            } else {
+               let type = /image/.test(quoted.msg.mimetype) ? "image" : /video/.test(quoted.msg.mimetype) ? "video" : false
+               if (!type) throw "Type tidak didukung"
+               await hisoka.sendMessage("status@broadcast", {
+                  [`${type}`]: await downloadM(),
+                  caption: m.text || m.quoted?.body || ""
+               }, { statusJidList })
+            }
+            break
 case 'remini': {
 			if (!m.quoted) return m.reply(`Where is the picture?`)
 			if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`)
@@ -1346,6 +1430,7 @@ renderLargerThumbnail: true
 break 
 ///menu menu menu
 case 'Menumain': {
+if (check("id", m.sender) == null) return reply(mess.notregister)
 let all = `
 Hello ${pushname}, ${waktuucapan}, I am a WhatsApp botz that comes with cool features like download tiktok, create stickers, search for songs, and much more I'm here to help you, in various ways, including sending, and etc. The available features are below
 
@@ -2618,6 +2703,7 @@ ${readmore}
 ╠➤ : listprem
 ╠➤ : myip
 ╠➤ : block
+╠➤ : upsw
 ╠➤ : unblock
 ╠➤ : listblock
 ╠➤ : autoread  
@@ -2625,9 +2711,12 @@ ${readmore}
 ╠➤ : speed
 ╠➤ : setppbot
 ╠➤ : leave
+╠➤ : listsw
 ╠➤ : welcome
 ╠➤ : restart 
 ╠➤ : getcase
+╠➤ : getsw
+╠➤ : sw
 ╠➤ : ambilcase
 ╠➤ : setcmd
 ╠➤ : delcmd
@@ -2655,6 +2744,7 @@ ${readmore}
 ╠➤ : antilinktt
 ╠➤ : antivirtex
 ╠➤ : mutegc
+╠➤ : poll
 ╠➤ : bcgroup
 ╠➤ : broadcast
 ╠➤ : editinfo
