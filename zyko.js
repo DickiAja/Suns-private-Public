@@ -1209,7 +1209,7 @@ case 'poll': {
 let anu = text.split("|") 
 let name = anu.slice(0, 1) 
 let value = anu.slice(1) 
-conn.sendMessage(m.chat, { poll: { name: name, values: value, selectableCount: 1 }})
+zyko.sendMessage(m.chat, { poll: { name: name, values: value, selectableCount: 1 }})
 }
 break
 case "getsw": case "sw": {
