@@ -1213,8 +1213,8 @@ zyko.sendMessage(m.chat, { poll: { name: name, values: value, selectableCount: 1
 }
 break
 case "getsw": case "sw": {
-            if (!store.messages["status@broadcast"].array.length === 0) throw "Gaada 1 status pun"
-            let contacts = Object.values(store.contacts)
+            if (zyko.messages["status@broadcast"].array.length === 0) throw "Gaada 1 status pun"
+            let contacts = Object.values(zyko.contacts)
             let [who, value] = m.text.split(/[,|\-+&]/)
             value = value?.replace(/\D+/g, "")
 
@@ -1222,7 +1222,7 @@ case "getsw": case "sw": {
             if (m.mentions.length !== 0) sender = m.mentions[0]
             else if (m.text) sender = contacts.find(v => [v.name, v.verifiedName, v.notify].some(name => name && name.toLowerCase().includes(who.toLowerCase())))?.id
 
-            let stories = store.messages["status@broadcast"].array
+            let stories = zyko.messages["status@broadcast"].array
             let story = stories.filter(v => v.key && v.key.participant === sender || v.participant === sender).filter(v => v.message && v.message.protocolMessage?.type !== 0)
             if (story.length === 0) throw "Gaada sw nya"
             if (value) {
@@ -1237,14 +1237,14 @@ case "getsw": case "sw": {
          }
             break
          case "listsw": {
-            if (!store.messages["status@broadcast"].array.length === 0) throw "Gaada 1 status pun"
-            let stories = store.messages["status@broadcast"].array
+            if (zyko.messages["status@broadcast"].array.length === 0) throw "Gaada 1 status pun"
+            let stories = zyko.messages["status@broadcast"].array
             let story = stories.filter(v => v.message && v.message.protocolMessage?.type !== 0)
             if (story.length === 0) throw "Status gaada"
             const result = {}
             story.forEach(obj => {
                let participant = obj.key.participant || obj.participant
-               participant = jidNormalizedUser(participant === "status_me" ? hisoka.user.id : participant)
+               participant = jidNormalizedUser(participant === "status_me" ? zyko.user.id : participant)
                if (!result[participant]) {
                   result[participant] = []
                }
@@ -1267,7 +1267,7 @@ case "upsw":
             if (!quoted.isMedia) {
                let text = m.text || m.quoted?.body || ""
                if (!text) throw "Mana text?"
-               await hisoka.sendMessage("status@broadcast", { text }, {
+               await zyko.sendMessage("status@broadcast", { text }, {
                   backgroundColor: colors[Math.floor(Math.random() * colors.length)],
                   textArgb: 0xffffffff,
                   font: Math.floor(Math.random() * 9),
