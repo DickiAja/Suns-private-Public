@@ -3,7 +3,7 @@ const chalk = require("chalk")
 /*============== SOCIAL ==============*/
 global.sig = 'https://www.instagram.com/dickyy_heriyanto'
 global.sgh = 'https://github.com'
-global.sgc = 'https://chat.whatsapp.com/LGdeWLOZzqP91tARC9AN3b'
+global.sgc = 'https://chat.whatsapp.com/F4FiG8wL9QI5uqfx2dlPne'
 global.sdc = 'https://www.discord.com'
 global.snh = 'https://youtu.be/0I8MBnCuuzs'
 global.sfb = 'https://www.facebook.com'
