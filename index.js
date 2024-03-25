@@ -262,7 +262,7 @@ vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await zyko.getName(i + '@s.whatsapp.net')}
 zyko.sendMessage(jid, { contacts: { displayName: `${list.length} Kontak`, contacts: list }, ...opts }, { quoted })}
 //=================================================//
 //Kalau Mau Self Lu Buat Jadi false
-zyko.public = false
+zyko.public = true
 zyko.serializeM = (m) => smsg(zyko, m, store)
 zyko.ev.on("connection.update", async (update) => {
 const { connection, lastDisconnect } = update;
