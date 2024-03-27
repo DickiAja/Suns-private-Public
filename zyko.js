@@ -1204,6 +1204,24 @@ zyko.sendTextWithMentions(m.chat, `@${m.sender.split('@')[0]} telah kembali dari
 
 //=================================================//
 switch (command) {
+case 'hd': {
+  if (!isPremium && global.db.data.users[m.sender].limit < 2) return reply(mess.endLimit);
+  db.data.users[m.sender].limit -= 2;
+  const q = m.quoted ? m.quoted : m;
+  const mime = (q.msg || q).mimetype || q.mediaType || '';
+  if (/^image/.test(mime) && !/webp/.test(mime)) {
+    const img = await q.download();
+    const out = await uploadImage(img);
+    m.reply(wait);
+    const api = await fetch(`https://aemt.me/remini?url=${out}&resolusi=4`);
+    const image = await api.json();
+    const { url } = image;
+    conn.sendFile(m.chat, url, null, wm, m);
+  } else {
+    m.reply(`Kirim gambar dengan caption *hd* atau tag gambar yang sudah dikirim.`);
+  }
+  break;
+}
 case 'poll': {
 	if(!text) return m.reply(`Contoh: ${prefix+command} Besok main gk?|Ayo aja|Ga ah malas`) 
 let anu = text.split("|") 
